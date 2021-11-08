@@ -35,8 +35,9 @@ jobs:
             latest=auto
             prefix=${{ env.VELOCITY_MAJOR_MINOR }}-
           tags: |
+            type=raw,value=${{ env.VELOCITY_VERSION }},prefix=
+            type=raw,value=${{ env.VELOCITY_MAJOR_MINOR }},prefix=
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
             type=ref,event=branch,enable=${{ github.event_name == 'push' }}
             type=sha,prefix=,enable=${{ github.event_name == 'pull_request' }}
 
