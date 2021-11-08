@@ -1,13 +1,15 @@
 name: Image
 
 on:
-  schedule:
-    - cron: "0 10 * * *"
   push:
     branches: [main]
     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
   pull_request:
     branches: [main]
+
+env:
+  VELOCITY_VERSION: "3.0.1"
+  VELOCITY_MAJOR_MINOR: "3.0"
 
 jobs:
   publish:
@@ -29,11 +31,14 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ghcr.io/${{ github.repository }}
+          flavor: |
+            latest=auto
+            prefix=${{ env.VELOCITY_MAJOR_MINOR }}-
           tags: |
-            type=schedule
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha
+            type=ref,event=branch,enable=${{ github.event_name == 'push' }}
+            type=sha,prefix=,enable=${{ github.event_name == 'pull_request' }}
 
       - uses: docker/login-action@v1
         with:
@@ -44,6 +49,9 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           context: .
+          build-args: |
+            VELOCITY_VERSION=${{ env.VELOCITY_VERSION }}
+
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
