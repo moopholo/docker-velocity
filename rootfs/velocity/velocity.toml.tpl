@@ -14,7 +14,7 @@ ping-passthrough = "{{ getenv `VELOCITY_PING_PASSTHROUGH` `description` }}"
 [servers]
 {{ getenv `VELOCITY_SERVERS` `{"lobby":"127.0.0.1:30066"}` | json | toTOML }}
 
-try = {{ getenv `VELOCITY_SERVERS_TRY` `["lobby"]` | jsonArray | toJSON }}{{ end }}
+try = {{ getenv `VELOCITY_SERVERS_TRY` `["lobby"]` | jsonArray | toJSON }}
 
 [forced-hosts]
 {{ getenv `VELOCITY_FORCED_HOSTS` `{}` | json | toTOML }}
