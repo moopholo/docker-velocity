@@ -1,3 +1,4 @@
 enhancement: ["feature/*", "feat/*"]
 bug: fix/*
 chore: chore/*
+ci: ci/*
