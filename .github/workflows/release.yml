@@ -16,7 +16,7 @@ jobs:
           token: ${{ secrets.ACTIONS_PAT }}
 
       - id: tag
-        uses: mathieudutour/github-tag-action@v5.6
+        uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.ACTIONS_PAT }}
 
