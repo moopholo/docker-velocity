@@ -8,8 +8,8 @@ on:
     branches: [main]
 
 env:
-  VELOCITY_VERSION: "3.0.1"
-  VELOCITY_MAJOR_MINOR: "3.0"
+  VELOCITY_VERSION: "3.1.1"
+  VELOCITY_MAJOR_MINOR: "3.1"
 
 jobs:
   publish-ghcr:
