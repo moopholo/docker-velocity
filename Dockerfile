@@ -1,11 +1,18 @@
 FROM hairyhenderson/gomplate:v3.10.0 as gomplate
 FROM alpine:latest as velocity
 
-ARG VELOCITY_VERSION=3.0.1
+ARG VELOCITY_VERSION
+ARG VELOCITY_BUILD
 RUN apk add --update \
   ca-certificates \
   curl \
-  && curl -fsSL -o /tmp/velocity.jar https://versions.velocitypowered.com/download/${VELOCITY_VERSION}.jar
+  jq \
+  && version="${VELOCITY_VERSION:-$(curl -sL https://papermc.io/api/v2/projects/velocity | jq -r '.versions | max_by( select(contains("SNAPSHOT") | not) | split(".") | map(tonumber))')}" \
+  && build="${VELOCITY_BUILD:-$(curl -sL https://papermc.io/api/v2/projects/velocity/versions/${version} | jq -r '.builds[-1]')}" \
+  && jar="$(curl -sL https://papermc.io/api/v2/projects/velocity/versions/${version}/builds/${build} | jq -r '.downloads.application.name')" \
+  && sha="$(curl -sL https://papermc.io/api/v2/projects/velocity/versions/${version}/builds/${build} | jq -r '.downloads.application.sha256')" \
+  && curl -fsSL -o /tmp/velocity.jar "https://papermc.io/api/v2/projects/velocity/versions/${version}/builds/${build}/downloads/${jar}" \
+  && echo "${sha}  /tmp/velocity.jar" | sha256sum -c -
 
 FROM openjdk:17.0.1-buster
 COPY --from=gomplate /gomplate /bin/gomplate
