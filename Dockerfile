@@ -14,7 +14,7 @@ RUN apk add --update \
   && curl -fsSL -o /tmp/velocity.jar "https://papermc.io/api/v2/projects/velocity/versions/${version}/builds/${build}/downloads/${jar}" \
   && echo "${sha}  /tmp/velocity.jar" | sha256sum -c -
 
-FROM openjdk:17.0.1-buster
+FROM openjdk:18.0.1.1-buster
 COPY --from=gomplate /gomplate /bin/gomplate
 COPY --from=velocity /tmp/velocity.jar /velocity/velocity.jar
 COPY rootfs/ /
