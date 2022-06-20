@@ -1,4 +1,4 @@
-FROM hairyhenderson/gomplate:v3.10.0 as gomplate
+FROM hairyhenderson/gomplate:v3.11.1 as gomplate
 FROM alpine:latest as velocity
 
 ARG VELOCITY_VERSION
